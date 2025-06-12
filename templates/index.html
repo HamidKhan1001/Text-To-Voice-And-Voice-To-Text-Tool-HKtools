@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HKTools - Voice Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <nav class="navbar">
+  <div class="nav-brand">HKTools</div>
+
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+    ☰
+  </button>
+
+  <ul class="nav-menu" id="navMenu">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+
+  <!-- Main Container -->
+  <section class="container" id="home">
+    <h1>Professional Voice Assistant</h1>
+
+    <textarea id="text" placeholder="Type something to speak..."></textarea>
+
+    <!-- Controls Grid -->
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="voice">Voice</label>
+        <select id="voice"></select>
+      </div>
+      <div class="form-group">
+        <label for="pitch">Pitch</label>
+        <input type="range" id="pitch" min="0.5" max="2" value="1" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="rate">Rate</label>
+        <input type="range" id="rate" min="0.5" max="2" value="1" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="volume">Volume</label>
+        <input type="range" id="volume" min="0" max="1" value="1" step="0.1">
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="button-row">
+      <button onclick="speak()">Speak</button>
+      <button onclick="listen()">Listen</button>
+      <button onclick="clearText()">Clear</button>
+    </div>
+
+    <p id="output"></p>
+
+    <h2>Generate MP3 (Server-side)</h2>
+    <form method="POST" action="/speak">
+      <textarea name="text" placeholder="Enter text for MP3..." required></textarea>
+      <button type="submit">Generate MP3</button>
+    </form>
+
+    {% if filename %}
+    <div class="mp3-preview">
+      <h3>MP3 Preview</h3>
+      <audio controls autoplay>
+        <source src="{{ url_for('audio', filename=filename) }}" type="audio/mpeg">
+        Your browser does not support audio playback.
+      </audio>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <h2>About HKTools</h2>
+    <p>
+      My name is <strong>Hamid Khan</strong>. HKTools is a browser-based voice assistant developed using Python (Flask), JavaScript, and HTML/CSS.
+    </p>
+    <p>
+      This tool lets you:
+      <ul>
+        <li>Convert text to speech using customizable voice, pitch, rate, and volume.</li>
+        <li>Use your microphone to convert speech to text.</li>
+        <li>Generate downloadable MP3 files using server-side Python (gTTS).</li>
+        <li>Choose from available male and female voices.</li>
+      </ul>
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Made with love by Hamid</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
